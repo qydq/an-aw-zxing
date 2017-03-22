@@ -34,6 +34,9 @@ public class CodeUtils {
 
     public static final String RESULT_TYPE = "result_type";
     public static final String RESULT_STRING = "result_string";
+    public static final String RESULT_LISTS = "result_lists";
+    public static final String RESULT_BITMAP = "result_bitmap";
+    public static final String STATUS_SHOW = "showright";
     public static final int RESULT_SUCCESS = 1;
     public static final int RESULT_FAILED = 2;
 
@@ -242,6 +245,7 @@ public class CodeUtils {
         bundle.putInt(LAYOUT_ID, layoutId);
         captureFragment.setArguments(bundle);
     }
+
     /**
      * 打开闪光灯,关闭闪光灯控制。
      */

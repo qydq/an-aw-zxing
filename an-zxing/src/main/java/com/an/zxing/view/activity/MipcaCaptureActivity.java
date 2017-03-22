@@ -1,6 +1,5 @@
 package com.an.zxing.view.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -26,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.an.an_zxing.R;
+import com.an.base.view.SuperActivity;
+import com.an.zxing.utils.CodeUtils;
 import com.an.zxing.utils.camera.CameraManager;
 import com.an.zxing.utils.decoding.CaptureActivityHandler;
 import com.an.zxing.utils.decoding.InactivityTimer;
@@ -48,12 +49,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Vector;
 
+import static android.view.View.INVISIBLE;
+
 /*
 *  作者：qydq/shiluohua,
  * email:qyddai@gmail.com
  * 如使用标明出处。连续扫描二维码的MipcaActivity
 * */
-public class MipcaCaptureActivity extends Activity implements Callback, View.OnClickListener {
+public class MipcaCaptureActivity extends SuperActivity implements Callback, View.OnClickListener {
 
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
@@ -70,6 +73,7 @@ public class MipcaCaptureActivity extends Activity implements Callback, View.OnC
     private static final int REQUEST_CODE = 100;
     private static final int PARSE_BARCODE_SUC = 300;
     private static final int PARSE_BARCODE_FAIL = 303;
+    private static final int PARSE_IMAGE_FAIL = 305;
     private ProgressDialog mProgress;
     private String photo_path;
     private Bitmap scanBitmap;
@@ -80,13 +84,9 @@ public class MipcaCaptureActivity extends Activity implements Callback, View.OnC
     private int time = 0;
     private String listsString;
 
-    /**
-     * Called when the activity is first created.
-     */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.an_zxing_activity_mipcapture);
+    public void initView() {
+        setContentView(R.layout.an_activity_zxing_mipcapture);
         //ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
         CameraManager.init(getApplication());
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
@@ -98,8 +98,11 @@ public class MipcaCaptureActivity extends Activity implements Callback, View.OnC
         inactivityTimer = new InactivityTimer(this);
         times = getIntent().getIntExtra("times", 1);
         tvCounts.setText("注意：您可以扫描" + times + "次");
-
         ImageButton mImageButton = (ImageButton) findViewById(R.id.button_function);
+        int status = getIntent().getIntExtra(CodeUtils.STATUS_SHOW, INVISIBLE);
+        if (status == INVISIBLE) {
+            mImageButton.setVisibility(View.INVISIBLE);
+        }
         mImageButton.setOnClickListener(this);
     }
 
@@ -129,13 +132,12 @@ public class MipcaCaptureActivity extends Activity implements Callback, View.OnC
 
             mProgress.dismiss();
             switch (msg.what) {
-                case PARSE_BARCODE_SUC:
-                    onResultHandler((String) msg.obj, listsString, scanBitmap);
-                    break;
                 case PARSE_BARCODE_FAIL:
                     Toast.makeText(MipcaCaptureActivity.this, (String) msg.obj, Toast.LENGTH_LONG).show();
                     break;
-
+                case PARSE_IMAGE_FAIL:
+                    onResultHandler((String) msg.obj, scanBitmap);//只要handler到此方法，scanBitmap肯定是有值的。
+                    break;
             }
         }
 
@@ -166,7 +168,7 @@ public class MipcaCaptureActivity extends Activity implements Callback, View.OnC
                             Result result = scanningImage(photo_path);
                             if (result != null) {
                                 Message m = mHandler.obtainMessage();
-                                m.what = PARSE_BARCODE_SUC;
+                                m.what = PARSE_IMAGE_FAIL;
                                 m.obj = result.getText();
                                 mHandler.sendMessage(m);
                             } else {
@@ -179,7 +181,6 @@ public class MipcaCaptureActivity extends Activity implements Callback, View.OnC
                     }).start();
 
                     break;
-
             }
         }
     }
@@ -211,7 +212,6 @@ public class MipcaCaptureActivity extends Activity implements Callback, View.OnC
         QRCodeReader reader = new QRCodeReader();
         try {
             return reader.decode(bitmap1, hints);
-
         } catch (NotFoundException e) {
             e.printStackTrace();
         } catch (ChecksumException e) {
@@ -315,6 +315,7 @@ public class MipcaCaptureActivity extends Activity implements Callback, View.OnC
             listsString = mLinkedSetString.toString();
             tvCount.setText("扫描结束，正在为你上传数据，waiting...");
             System.out.println("qydq超过扫描次数！当前数据为：" + mLinkedSetString.toString());
+            System.out.println("qydq超过扫描次数！listsString：" + listsString);
             //超过扫描次数则把数据返回回去在上一个activity中用onActivityResult接受result参数，延迟3秒。
             try {
                 Thread.sleep(5000);//阻断5秒
@@ -352,9 +353,29 @@ public class MipcaCaptureActivity extends Activity implements Callback, View.OnC
         }
         Intent resultIntent = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putString("result", resultString);
-        bundle.putString("listsString", listsString);
-        bundle.putParcelable("bitmap", bitmap);
+        bundle.putString(CodeUtils.RESULT_STRING, resultString);
+        bundle.putString(CodeUtils.RESULT_LISTS, listsString);
+        bundle.putParcelable(CodeUtils.RESULT_BITMAP, bitmap);
+        resultIntent.putExtras(bundle);
+        this.setResult(RESULT_OK, resultIntent);
+        MipcaCaptureActivity.this.finish();
+    }
+
+    /**
+     * 跳转到上一个页面,主要是针对多次扫描点击图片的方法。
+     *
+     * @param resultString
+     * @param bitmap
+     */
+    private void onResultHandler(String resultString, Bitmap bitmap) {
+        if (TextUtils.isEmpty(resultString)) {
+            Toast.makeText(MipcaCaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent resultIntent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString(CodeUtils.RESULT_STRING, resultString);
+        bundle.putParcelable(CodeUtils.RESULT_BITMAP, bitmap);
         resultIntent.putExtras(bundle);
         this.setResult(RESULT_OK, resultIntent);
         MipcaCaptureActivity.this.finish();

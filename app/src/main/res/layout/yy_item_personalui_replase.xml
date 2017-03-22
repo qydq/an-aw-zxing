@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/include1"
-            layout="@layout/an_zxing_activity_title"
+            layout="@layout/base_item_zxing_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />

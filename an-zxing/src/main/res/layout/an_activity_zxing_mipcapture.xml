@@ -15,10 +15,34 @@
 
         <include
             android:id="@+id/include1"
-            layout="@layout/an_zxing_activity_title"
+            layout="@layout/base_item_zxing_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/tvCounts"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:text="默认扫描次数"
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvCount"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:text="已扫描0次"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
 
         <com.an.zxing.view.widget.ViewfinderView
             android:id="@+id/viewfinder_view"

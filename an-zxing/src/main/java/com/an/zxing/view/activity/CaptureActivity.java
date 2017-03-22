@@ -11,11 +11,11 @@ package com.an.zxing.view.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.an.an_zxing.R;
-import com.an.zxing.view.fragment.CaptureFragment;
+import com.an.base.view.SuperActivity;
 import com.an.zxing.utils.CodeUtils;
+import com.an.zxing.view.fragment.CaptureFragment;
 
 
 /**
@@ -25,14 +25,11 @@ import com.an.zxing.utils.CodeUtils;
  * 如使用标明出处。
  * 默认的二维码扫描Activity
  */
-public class CaptureActivity extends AppCompatActivity {
-
+public class CaptureActivity extends SuperActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.an_zxing_activity_capture);
+    public void initView() {
+        setContentView(R.layout.an_activity_zxing_capture);
         CaptureFragment captureFragment = new CaptureFragment();
         captureFragment.setAnalyzeCallback(analyzeCallback);
         getFragmentManager().beginTransaction().replace(R.id.fl_zxing_container, captureFragment).commit();

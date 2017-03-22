@@ -75,7 +75,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
         }
 
         if (view == null) {
-            view = inflater.inflate(R.layout.an_zxing_fragment_capture, null);
+            view = inflater.inflate(R.layout.an_fragment_zxing_capture, null);
         }
 
         viewfinderView = (ViewfinderView) view.findViewById(R.id.viewfinder_view);

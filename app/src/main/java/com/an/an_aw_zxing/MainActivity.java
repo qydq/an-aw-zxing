@@ -24,6 +24,8 @@ import com.an.zxing.utils.encoding.EncodingHandler;
 import com.an.zxing.view.activity.CaptureActivity;
 import com.an.zxing.view.activity.MipcaCaptureActivity;
 
+import static android.view.View.VISIBLE;
+
 /*
 * 作者：qydq/shiluohua,
  * email:qyddai@gmail.com
@@ -33,7 +35,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     //如果要实现连续扫描请调用handler.restartPreviewAndDecode();
 
-    private final static int SCANNIN_GREQUEST_CODE = 1;
+    public static final int REQUEST_IMAGE = 101;//图库
+    public static final int REQUEST_SELF = 102;//自定义
+    private final static int REQUEST_CONTINUOUS = 104;//多次扫码
+    public static final int REQUEST_DEFAULT = 103;//默认的
     /**
      * 显示扫描结果
      */
@@ -43,6 +48,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
      * 显示扫描拍的图片
      */
     private ImageView mImageView;
+    private ImageView imageViewMoren;
+    private ImageView imagePhto;
 
     /**
      * 显示创建的二维码
@@ -57,14 +64,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
      */
     private TextView resultTextView;
     private TextView ivPhoto;
+    private TextView ivSelf;
     private EditText editText;
 
     LinearLayout rll;
 
 
-    public static final int REQUEST_CODE = 111;
-
-    public static final int REQUEST_IMAGE = 101;
     private Button mButton;
     private Button btnaddCode;
     private Button btn3;
@@ -81,9 +86,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mImageView = (ImageView) findViewById(R.id.qrcode_bitmap);
         qrStrEditText = (EditText) this.findViewById(R.id.et_qr_string);
         qrImgImageView = (ImageView) this.findViewById(R.id.iv_qr_image);
+        imageViewMoren = (ImageView) this.findViewById(R.id.imageViewMoren);
+        imagePhto = (ImageView) this.findViewById(R.id.imagePhto);
         resultTextView = (TextView) this.findViewById(R.id.tv_scan_result);
         ivPhoto = (TextView) this.findViewById(R.id.ivPhoto);
         ivMoren = (TextView) this.findViewById(R.id.ivMoren);
+        ivSelf = (TextView) this.findViewById(R.id.ivSelf);
         editText = (EditText) this.findViewById(R.id.editText);
 
         btn3 = (Button) findViewById(R.id.btn3);
@@ -103,13 +111,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case SCANNIN_GREQUEST_CODE://连续扫码。
+            case REQUEST_CONTINUOUS://连续扫码。
                 if (resultCode == RESULT_OK) {
                     Bundle bundle = data.getExtras();
                     //显示扫描到的内容
-                    mTextView.setText(bundle.getString("result"));
+//                    mTextView.setText(bundle.getString("result"));//得到最后一次的扫描结果。
+                    mTextView.setText(bundle.getString(CodeUtils.RESULT_LISTS));//得到组装后的扫描结果。
                     //显示
-                    mImageView.setImageBitmap((Bitmap) data.getParcelableExtra("bitmap"));
+                    mImageView.setImageBitmap((Bitmap) data.getParcelableExtra(CodeUtils.RESULT_BITMAP));
                 }
                 break;
             case REQUEST_IMAGE://相册二维码。
@@ -124,6 +133,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
                                 Toast.makeText(MainActivity.this, "解析结果:" + result, Toast.LENGTH_LONG).show();
                                 ivPhoto.setText("相册解析结果:" + result);
+                                imagePhto.setImageBitmap(mBitmap);
                             }
 
                             @Override
@@ -133,15 +143,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             }
                         });
 
-                        if (mBitmap != null) {
+        /*                if (mBitmap != null) {
                             mBitmap.recycle();
-                        }
+                        }*/
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
                 break;
-            case REQUEST_CODE://默认扫码
+            case REQUEST_DEFAULT://默认扫码
                 //处理扫描结果（在界面上显示）
                 if (null != data) {
                     Bundle bundle = data.getExtras();
@@ -155,6 +165,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                         Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
                         ivMoren.setText("默认解析结果:" + "解析二维码失败");
+                    }
+                }
+                break;
+            case REQUEST_SELF:
+                if (null != data) {
+                    Bundle bundle = data.getExtras();
+                    if (bundle == null) {
+                        return;
+                    }
+                    if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                        String result = bundle.getString(CodeUtils.RESULT_STRING);
+                        Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                        ivSelf.setText("自定义界面解析结果:" + result);
+                    } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                        Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                        ivSelf.setText("自定义界面解析结果:" + "解析二维码失败");
                     }
                 }
                 break;
@@ -177,7 +203,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn3://扫描默认二维码。
                 intent.setClass(MainActivity.this, CaptureActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                startActivityForResult(intent, REQUEST_DEFAULT);
                 break;
             //点击按钮跳转到二维码扫描界面，这里用的是startActivityForResult跳转
             //扫描完了之后调到该界面/连续扫描
@@ -190,8 +216,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 intent.putExtra("times", number);
                 Toast.makeText(getApplicationContext(), "您可以扫描" + number + "次", Toast.LENGTH_SHORT).show();
                 intent.setClass(MainActivity.this, MipcaCaptureActivity.class);
+                intent.putExtra(CodeUtils.STATUS_SHOW, VISIBLE);//控制右边的按钮是否显示。
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+                startActivityForResult(intent, REQUEST_CONTINUOUS);
                 break;
             case R.id.btn_add_qrcode://创建二维码图片
                 String contentString = qrStrEditText.getText().toString();
@@ -210,7 +237,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     //生成不带log的二维码
 //                    qrCodeBitmap = EncodingHandler.createImage(contentString, 400, 400, null);
                     //生成带log的二维码
-                    qrCodeBitmap = EncodingHandler.createImage(contentString, 400, 400, BitmapFactory.decodeResource(getResources(), R.drawable.aar_ic_launcher));
+                    qrCodeBitmap = EncodingHandler.createImage(contentString, 400, 400, BitmapFactory.decodeResource(getResources(), R.mipmap.yy));
 
                     qrImgImageView.setImageBitmap(qrCodeBitmap);
                 }
@@ -220,7 +247,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                  * 执行扫面Fragment的初始化操作
                  */
                 intent.setClass(MainActivity.this, SecondActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_SELF);
                 break;
         }
     }

@@ -70,7 +70,7 @@ public final class ViewfinderView extends View {
         resultPointColor = resources.getColor(R.color.possible_result_points);
         possibleResultPoints = new HashSet<ResultPoint>(5);
 
-        scanLight = BitmapFactory.decodeResource(resources, R.drawable.aar_qrcode_scan_line);
+        scanLight = BitmapFactory.decodeResource(resources, R.drawable.base_zxing_qrcode_scan_line);
 
         initDisplayOpinion(context);
 
@@ -111,7 +111,7 @@ public final class ViewfinderView extends View {
         }
 
         // 扫描控件
-        scanLight = BitmapFactory.decodeResource(getResources(), ta.getResourceId(R.styleable.innerrect_inner_scan_bitmap, R.drawable.aar_qrcode_scan_line));
+        scanLight = BitmapFactory.decodeResource(getResources(), ta.getResourceId(R.styleable.innerrect_inner_scan_bitmap, R.drawable.base_zxing_qrcode_scan_line));
         // 扫描速度
         SCAN_VELOCITY = ta.getInt(R.styleable.innerrect_inner_scan_speed, 5);
 
