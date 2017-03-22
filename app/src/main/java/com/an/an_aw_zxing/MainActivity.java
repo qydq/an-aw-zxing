@@ -166,6 +166,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
                         ivMoren.setText("默认解析结果:" + "解析二维码失败");
                     }
+                    Bitmap bitmap = data.getParcelableExtra(CodeUtils.RESULT_BITMAP);
+                    if (bitmap != null) {
+                        imageViewMoren.setImageBitmap(bitmap);
+                    }
                 }
                 break;
             case REQUEST_SELF:

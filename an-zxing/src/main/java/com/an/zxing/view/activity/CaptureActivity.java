@@ -46,6 +46,7 @@ public class CaptureActivity extends SuperActivity {
             Bundle bundle = new Bundle();
             bundle.putInt(CodeUtils.RESULT_TYPE, CodeUtils.RESULT_SUCCESS);
             bundle.putString(CodeUtils.RESULT_STRING, result);
+            bundle.putParcelable(CodeUtils.RESULT_BITMAP, mBitmap);
             resultIntent.putExtras(bundle);
             setResult(RESULT_OK, resultIntent);
             finish();
