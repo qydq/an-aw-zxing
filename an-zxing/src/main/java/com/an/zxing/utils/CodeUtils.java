@@ -1,5 +1,7 @@
 package com.an.zxing.utils;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -7,19 +9,24 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.an.zxing.view.fragment.CaptureFragment;
 import com.an.zxing.utils.camera.BitmapLuminanceSource;
 import com.an.zxing.utils.camera.CameraManager;
 import com.an.zxing.utils.decoding.DecodeFormatManager;
+import com.an.zxing.utils.decoding.RGBLuminanceSource;
+import com.an.zxing.view.fragment.CaptureFragment;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
+import com.google.zxing.ChecksumException;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.EncodeHintType;
+import com.google.zxing.FormatException;
 import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
@@ -41,6 +48,7 @@ public class CodeUtils {
     public static final int RESULT_FAILED = 2;
 
     public static final String LAYOUT_ID = "layout_id";
+    public static final int REQUEST_CODE = 100;//是等于MipcaCaptureActivity
 
     public static void analyzeBitmap(Bitmap mBitmap, AnalyzeCallback analyzeCallback) {
 
@@ -143,6 +151,7 @@ public class CodeUtils {
             }
         }
     }
+
 
     /**
      * 生成二维码图片

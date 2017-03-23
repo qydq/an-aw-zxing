@@ -10,6 +10,8 @@ import com.an.base.view.SuperActivity;
 import com.an.zxing.utils.CodeUtils;
 import com.an.zxing.view.fragment.CaptureFragment;
 
+import static android.view.View.INVISIBLE;
+
 
 /*
 * 作者：qydq/shiluohua,
@@ -26,6 +28,7 @@ public class SecondActivity extends SuperActivity {
         captureFragment = new CaptureFragment();
         // 为二维码扫描界面设置定制化界面
         CodeUtils.setFragmentArgs(captureFragment, R.layout.yy_item_personalui_replase);
+        captureFragment.onSetvisible(getIntent().getIntExtra(CodeUtils.STATUS_SHOW, INVISIBLE));
         captureFragment.setAnalyzeCallback(analyzeCallback);
 //        getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();v4我们不支持了
         getFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();

@@ -17,6 +17,8 @@ import com.an.base.view.SuperActivity;
 import com.an.zxing.utils.CodeUtils;
 import com.an.zxing.view.fragment.CaptureFragment;
 
+import static android.view.View.INVISIBLE;
+
 
 /**
  * Initial the camera
@@ -32,6 +34,7 @@ public class CaptureActivity extends SuperActivity {
         setContentView(R.layout.an_activity_zxing_capture);
         CaptureFragment captureFragment = new CaptureFragment();
         captureFragment.setAnalyzeCallback(analyzeCallback);
+        captureFragment.onSetvisible(getIntent().getIntExtra(CodeUtils.STATUS_SHOW, INVISIBLE));
         getFragmentManager().beginTransaction().replace(R.id.fl_zxing_container, captureFragment).commit();
 //        getSupportFragmentManager().beginTransaction().replace(R.id.fl_zxing_container, captureFragment).commit();
     }

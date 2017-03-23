@@ -50,6 +50,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 /*
 *  作者：qydq/shiluohua,
@@ -100,8 +101,8 @@ public class MipcaCaptureActivity extends SuperActivity implements Callback, Vie
         tvCounts.setText("注意：您可以扫描" + times + "次");
         ImageButton mImageButton = (ImageButton) findViewById(R.id.button_function);
         int status = getIntent().getIntExtra(CodeUtils.STATUS_SHOW, INVISIBLE);
-        if (status == INVISIBLE) {
-            mImageButton.setVisibility(View.INVISIBLE);
+        if (status == VISIBLE) {
+            mImageButton.setVisibility(View.VISIBLE);
         }
         mImageButton.setOnClickListener(this);
     }

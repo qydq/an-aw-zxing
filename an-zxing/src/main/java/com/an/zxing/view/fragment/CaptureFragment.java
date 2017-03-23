@@ -1,14 +1,20 @@
 package com.an.zxing.view.fragment;
 
+import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,21 +23,38 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.an.an_zxing.R;
+import com.an.base.utils.DUtilsDialog;
 import com.an.zxing.utils.CodeUtils;
 import com.an.zxing.utils.camera.CameraManager;
 import com.an.zxing.utils.decoding.DCaptureActivityHandler;
 import com.an.zxing.utils.decoding.InactivityTimer;
+import com.an.zxing.utils.decoding.RGBLuminanceSource;
 import com.an.zxing.view.widget.ViewfinderView;
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.ChecksumException;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.FormatException;
+import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
 
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Vector;
 
+import static android.app.Activity.RESULT_OK;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 /**
- * 自定义实现的扫描Fragment
+ * 自定义实现的扫描Fragment,
+ * 张露月 默认是可见的。
  */
 public class CaptureFragment extends Fragment implements SurfaceHolder.Callback {
 
@@ -49,6 +72,13 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
     private SurfaceHolder surfaceHolder;
     private CodeUtils.AnalyzeCallback analyzeCallback;
     private Camera camera;
+    private static final int REQUEST_CODE = 100;
+    private String photo_path;
+    private static final int PARSE_BARCODE_FAIL = 303;
+    private static final int PARSE_IMAGE_FAIL = 305;
+    private Bitmap scanBitmap;
+    int status = INVISIBLE;
+    private Dialog mProgress;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +110,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
 
         viewfinderView = (ViewfinderView) view.findViewById(R.id.viewfinder_view);
         surfaceView = (SurfaceView) view.findViewById(R.id.preview_view);
+        ImageButton mImageButton = (ImageButton) view.findViewById(R.id.button_function);
         surfaceHolder = surfaceView.getHolder();
         Button mButtonBack = (Button) view.findViewById(R.id.button_back);
         mButtonBack.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +119,158 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
                 getActivity().finish();
             }
         });
+        if (status == VISIBLE) {
+            mImageButton.setVisibility(View.VISIBLE);
+        }
+
+        mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "dakai", Toast.LENGTH_SHORT).show();
+                //打开手机中的相册
+                Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); //"android.intent.action.GET_CONTENT"
+                innerIntent.setType("image/*");
+                Intent wrapperIntent = Intent.createChooser(innerIntent, "选择二维码图片");
+                startActivityForResult(wrapperIntent, REQUEST_CODE);
+            }
+        });
         return view;
+    }
+
+    private Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            DUtilsDialog.INSTANCE.dismissSimpleDialog();
+//            mProgress.dismiss();
+            switch (msg.what) {
+                case PARSE_BARCODE_FAIL:
+                    Toast.makeText(getActivity(), (String) msg.obj, Toast.LENGTH_LONG).show();
+                    Intent resultIntent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(CodeUtils.RESULT_TYPE, CodeUtils.RESULT_FAILED);
+                    bundle.putString(CodeUtils.RESULT_STRING, "");
+                    resultIntent.putExtras(bundle);
+                    getActivity().setResult(RESULT_OK, resultIntent);
+                    getActivity().finish();
+                    break;
+                case PARSE_IMAGE_FAIL:
+                    onResultHandler((String) msg.obj, scanBitmap);//只要handler到此方法，scanBitmap肯定是有值的。
+                    break;
+            }
+        }
+
+    };
+
+    /*
+    * 外部控制是否显示右边按钮的接口。
+    * 右边的按钮必须要。这里不能用setArguments方法；
+    * */
+
+
+    /**
+     * 扫描二维码图片的方法
+     *
+     * @param path
+     * @return
+     */
+    public Result scanningImage(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return null;
+        }
+        Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
+        hints.put(DecodeHintType.CHARACTER_SET, "UTF8"); //设置二维码内容的编码
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true; // 先获取原大小
+        scanBitmap = BitmapFactory.decodeFile(path, options);
+        options.inJustDecodeBounds = false; // 获取新的大小
+        int sampleSize = (int) (options.outHeight / (float) 200);
+        if (sampleSize <= 0)
+            sampleSize = 1;
+        options.inSampleSize = sampleSize;
+        scanBitmap = BitmapFactory.decodeFile(path, options);
+        RGBLuminanceSource source = new RGBLuminanceSource(scanBitmap);
+        BinaryBitmap bitmap1 = new BinaryBitmap(new HybridBinarizer(source));
+        QRCodeReader reader = new QRCodeReader();
+        try {
+            return reader.decode(bitmap1, hints);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        } catch (ChecksumException e) {
+            e.printStackTrace();
+        } catch (FormatException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 跳转到上一个页面
+     *
+     * @param resultString
+     * @param bitmap
+     */
+    private void onResultHandler(String resultString, Bitmap bitmap) {
+        if (TextUtils.isEmpty(resultString)) {
+            Toast.makeText(getActivity(), "Scan failed!", Toast.LENGTH_SHORT).show();
+            Intent resultIntent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putInt(CodeUtils.RESULT_TYPE, CodeUtils.RESULT_FAILED);
+            bundle.putString(CodeUtils.RESULT_STRING, "");
+            resultIntent.putExtras(bundle);
+            getActivity().setResult(RESULT_OK, resultIntent);
+            getActivity().finish();
+        }
+        Intent resultIntent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putInt(CodeUtils.RESULT_TYPE, CodeUtils.RESULT_SUCCESS);
+        bundle.putString(CodeUtils.RESULT_STRING, resultString);
+        bundle.putParcelable(CodeUtils.RESULT_BITMAP, bitmap);
+        resultIntent.putExtras(bundle);
+        getActivity().setResult(RESULT_OK, resultIntent);
+        getActivity().finish();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE:
+                    //获取选中图片的路径
+                    Cursor cursor = getActivity().getContentResolver().query(data.getData(), null, null, null, null);
+                    if (cursor.moveToFirst()) {
+                        photo_path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                    }
+                    cursor.close();
+                    mProgress = DUtilsDialog.INSTANCE.createSimpleDialog(getActivity(), false, "正在解析");
+//                    mProgress = new ProgressDialog(getActivity());
+//                    mProgress.setMessage("正在扫描...");
+//                    mProgress.setCancelable(false);
+                    mProgress.show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Result result = scanningImage(photo_path);
+                            if (result != null) {
+                                Message m = mHandler.obtainMessage();
+                                m.what = PARSE_IMAGE_FAIL;
+                                m.obj = result.getText();
+                                mHandler.sendMessage(m);
+                            } else {
+                                Message m = mHandler.obtainMessage();
+                                m.what = PARSE_BARCODE_FAIL;
+                                m.obj = "Scan failed!";
+                                mHandler.sendMessage(m);
+                            }
+                        }
+                    }).start();
+
+                    break;
+            }
+        }
     }
 
     @Override
@@ -202,7 +384,6 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
 
     public void drawViewfinder() {
         viewfinderView.drawViewfinder();
-
     }
 
     private void initBeepSound() {
@@ -258,4 +439,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
         this.analyzeCallback = analyzeCallback;
     }
 
+    public void onSetvisible(int visible) {
+        this.status = visible;
+    }
 }

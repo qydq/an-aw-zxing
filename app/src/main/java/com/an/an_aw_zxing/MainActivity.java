@@ -24,6 +24,7 @@ import com.an.zxing.utils.encoding.EncodingHandler;
 import com.an.zxing.view.activity.CaptureActivity;
 import com.an.zxing.view.activity.MipcaCaptureActivity;
 
+import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 /*
@@ -37,7 +38,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     public static final int REQUEST_IMAGE = 101;//图库
     public static final int REQUEST_SELF = 102;//自定义
-    private final static int REQUEST_CONTINUOUS = 104;//多次扫码
+    public final static int REQUEST_CONTINUOUS = 104;//多次扫码
     public static final int REQUEST_DEFAULT = 103;//默认的
     /**
      * 显示扫描结果
@@ -207,6 +208,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn3://扫描默认二维码。
                 intent.setClass(MainActivity.this, CaptureActivity.class);
+                intent.putExtra(CodeUtils.STATUS_SHOW, VISIBLE);//控制右边的按钮是否显示。
                 startActivityForResult(intent, REQUEST_DEFAULT);
                 break;
             //点击按钮跳转到二维码扫描界面，这里用的是startActivityForResult跳转
@@ -251,6 +253,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                  * 执行扫面Fragment的初始化操作
                  */
                 intent.setClass(MainActivity.this, SecondActivity.class);
+                intent.putExtra(CodeUtils.STATUS_SHOW, VISIBLE);//控制右边的按钮是否显示。
                 startActivityForResult(intent, REQUEST_SELF);
                 break;
         }

@@ -37,6 +37,7 @@
             android:id="@+id/button_function"
             android:layout_width="30dp"
             android:layout_height="28dp"
+            android:visibility="invisible"
             android:layout_gravity="center"
             android:background="@drawable/base_zxing_right"
             android:minWidth="70dip" />
