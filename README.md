@@ -56,7 +56,8 @@
 5.联系作者。
 
 
-# [![](https://jitpack.io/v/qydq/an-aw-zxing.svg)](https://jitpack.io/#qydq/an-aw-zxing)       [ ![Download](https://api.bintray.com/packages/qydq/an/an-aw-zxing/images/download.svg) ](https://bintray.com/qydq/an/an-aw-zxing/_latestVersion)
+# [![](https://jitpack.io/v/qydq/an-aw-zxing.svg)](https://jitpack.io/#qydq/an-aw-zxing)        [ ![Download](https://api.bintray.com/packages/qydq/an/an-aw-zxing/images/download.svg) ](https://bintray.com/qydq/an/an-aw-zxing/_latestVersion)
+
 
 #######
 
