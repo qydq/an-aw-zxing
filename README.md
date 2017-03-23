@@ -1,10 +1,8 @@
-ÎÒµÄÇ×Ç×Ğ¡ÔÂ£¨İªÂÜ»¨£©£¬Äã±ğÀë¿ªÎÒ¡£
+ÎÒµÄÇ×Ç×Ğ¡ÔÂ£¨İªÂÜ»¨£©£¬ÏëÄîÊÇ»áºôÎüµÄÍ´£¬Ëı»îÔÚÎÒÉíÉÏËùÓĞ½ÇÂä£¬ºßÄã°®µÄ¸è»áÍ´£¬ÏëÄãµÄĞÄ»áÍ´£¬Á¬³ÁÄ¬Ò²Í´£¬ÎÒ·¢ÊÄ²»ÈÃÄãµÈºò£¬¶à°®Äã¾Í»á±§Äã¶à½ôµÄ¡­¡­¡­¡­
+
+ÄÜÖØÀ´ÄÇ¾ÍºÃÁË  ¡£¡£ ÄÜÖØÀ´ÄÇ¾ÍºÃÁË ¡£¡£
 
 ÉúÃü²»¹ıÒ»³¡»Ã¾õ£¬ÎÒÖ»ÒªÄãÔÚ
-
-ËıÀë¿ª¡£¸Ã¿ò¼ÜÒÑ¾­Ò»¸ö¶àÔÂÃ»ÓĞÎ¬»¤ÁË£¬¶ø½ñÖØÊ°¼ÇÒä£¬Ö»ÎªÇé¹Ê ¡£. ¡£
-
-Ğ´¸øÕÅÂ¶ÔÂµÄÒ»ÆªÎÄÕÂ£¨ÒÑÊÖ³­Â¼£©
 
 [Äã´æ»îÔÚÎÒ¼ÇÒä×îÔ­Ê¼µÄ»ÄÔ­£¬¿Éµ­²»¿ÉÍü](https://zhuanlan.zhihu.com/p/25279447)
 
@@ -16,7 +14,7 @@
 
 * ¿ò¼Ü±ØĞëÒªÊ¹ÓÃµ½an-aw-base×÷Îª»ù´¡¡£
 
-* ¿ò¼ÜÀ´Ô´ÓÚ±¾ÈËan-maven-zxing¿ò¼Ü£¨ÒÑÍ£Ö¹Î¬»¤£©¡£
+* ¿ò¼ÜÀ´Ô´ÓÚ±¾ÈËan-maven-zxing¿ò¼Ü£¨Ò²ÒÑÍ£Ö¹Î¬»¤£©¡£
 
 * ¿ò¼Ü¼Ü¹¹»ùÓÚMVP£¬ÀûÓÃan-aw-zxing¿ò¼Ü¿ÉÒÔ¿ìËÙ°ïÖú¿ª·¢Õß¼¯³ÉÊÖ»ú¶şÎ¬ÂëµÄÉ¨Âë¹¦ÄÜ¡£
 
@@ -58,7 +56,7 @@
 5.ÁªÏµ×÷Õß¡£
 
 
-# [![](https://jitpack.io/v/qydq/an-aw-base.svg)](https://jitpack.io/#qydq/an-aw-base)       [ ![Download](https://api.bintray.com/packages/qydq/an/an-aw-base/images/download.svg?version=an-aw-base%3A2.0.1) ](https://bintray.com/qydq/an/an-aw-base/an-aw-base%3A2.0.1/link)
+# [![](https://jitpack.io/v/qydq/an-aw-zxing.svg)](https://jitpack.io/#qydq/an-aw-zxing)       [ ![Download](https://api.bintray.com/packages/qydq/an/an-aw-base/images/download.svg?version=an-aw-base%3A2.0.1) ](https://bintray.com/qydq/an/an-aw-base/an-aw-base%3A2.0.1/link)
 
 #######
 
@@ -79,11 +77,11 @@ allprojects {
 
 Step 2£º¼ÓÈëÒÔºó£¨ÔÚÄãµÄ×Óbuild.gradleÎÄ¼şÖĞÌí¼ÓÈçÏÂÒÀÀµ¹ØÏµ¡££©
 
-`compile 'com.github.qydq:an-aw-base:0.2.3'`
+`compile 'com.github.qydq:an-aw-zxing:1.0'`
 
 »òÕß¼ÓÈë£º
 
-`compile 'cn.android.sunst:an-base:2.0.1'`
+`compile 'cn.android.sunst:an-base:1.0'`
 
 Ê¹ÓÃÕûÌ×an¿ò¼ÜÔò¼ÓÈëÁíÒ»¸öÒÀÀµ£¬¾ßÌåÇë²Î¿¼url = https://github.com/qydq/an
 
@@ -99,23 +97,39 @@ aN¿ò¼ÜÖ§³Öandroid 4.4+Ê¹ÓÃ£¬¼æÈİĞÔ²âÊÔÍ¨¹ı£¬»ªÎªAndroid4.4 £¬Ğ¡Ã×Android5.1£¬ÈıĞ
 
 [µãÎÒÏÂÔØan-aw-base.apk](https://github.com/qydq/an-aw-base/raw/master/app/app-release.apk)
 
-[ÏÂÔØzhangluyue.apk-ÎÄ¼şÒÑ¼ÓÃÜ](https://github.com/qydq/an-aw-base/raw/master/app/zhangluyue_jiami.apk)
+[ÏÂÔØzhangluyue.apk-ÎÄ¼şqydq¼ÓÃÜ](https://github.com/qydq/an-aw-base/raw/master/app/zhangluyue_jiami.apk)
+
+[µãÎÒÏÂÔØan-aw-zxing.apk](https://github.com/qydq/an-aw-zxing/raw/master/app/app-release.apk)
 
 **Tips**
 ---
-
+ytips:ÍêÉÆËùÓĞ¹¦ÄÜ¡£
+1¡£Ö§³ÖÁ¬ĞøÉ¨Ãè¶şÎ¬Âë»òÕßÌõÂë£¬
+2¡£Ö§³ÖÑ¡ÔñÏµÍ³µÄÏà²á¶Ô¶şÎ¬Âë»òÌõÂëÍ¼Æ¬½øĞĞ½âÎö£¬
+3¡£Ö§³Ö·Ç¶şÎ¬Âë»òÌõÂëÍ¼Æ¬µÄÈİ´í´¦Àí£¬
+4¡£Ô´ÂëÖĞÌá¹©ÁË¶ÔÀàËÆQQ£¬Î¢ĞÅ¶şÎ¬ÂëÓĞlogµÄÉ¨Ãè£¬
+5¡£Ö§³Ö×Ô¶¨ÒåÉ¨Ãè¶şÎ¬ÂëµÄ½çÃæ£¬
+6¡£Ö§³Ö´´½¨¶şÎ¬Âë£¬
+7¡£Ìá¹©ÁËÏñµ±Ç°ÀàËÆÁ÷ĞĞµÄµ¥³µÉ¨ÂëÉùÒô£¬µÆ¹âµÄCodeUtils¹¤¾ßÀà£¬
+8¡£Ö§³Ö¿ØÖÆÏÔÊ¾¶şÎ¬ÂëÉ¨Ãè½çÃæÓÒ±ß°´Å¥ÊÇ·ñÏÔÊ¾µÄ¿ØÖÆ¡£
 
 ---------
 
 # 2. ÊµÏÖĞ§¹û
 
+ÊµÔÚÊÇÃ»ÓĞĞÄÇéÂ¼ÆÁ£¬adb shell screen ÉÏ´«Âé·³£¬¾Í½ØÁ½¸öÍ¼¸ø´ó¼Ò¹ÛÄ¦ÏÂ¿©£¬Èç¹ûÒª¿´ÕæÊµĞ§¹ûÔÚÉÏÃæµã»÷an-aw-zxing.apkÏÂÔØ¼´¿É¡£
 
+ ![](https://github.com/qydq/an-aw-zxing/blob/master/screen/demo_self.png)
+
+ ![](https://github.com/qydq/an-aw-zxing/blob/master/screen/demo_homepage.png)
 
 ---------
 
 # 3. Ê¹ÓÃ·½·¨£¨´úÂë£©
 
+[MainActivity](https://github.com/qydq/an-aw-zxing/blob/master/app/src/main/java/com/an/an_aw_zxing/MainActivity.java)
 
+[SecondActivity](https://github.com/qydq/an-aw-zxing/blob/master/app/src/main/java/com/an/an_aw_zxing/SecondActivity.java)
 
 ---------
 
@@ -142,7 +156,9 @@ http://drakeet.me/android-studio
 
 # Thanks
 
+android-zxingLibrary
 
+[google cod](http://repo1.maven.org/maven2/com/)
 
 #´òÉÍ
 
@@ -150,34 +166,59 @@ http://drakeet.me/android-studio
 
  <img src="https://github.com/qydq/an-aw-base/blob/master/app/src/main/res/mipmap-xxhdpi/qydq_an_alipay.png" width=280 />
 
+ 
+ ºÃ°É£¬±ğ°ÑÎÒÏëµÄÎ©ÀûÊÇÍ¼ÁË£¬ÎÒ¸ù±¾²»È±Ç®£¬Ö»ÊÇ³É¾Í¸Ğ°ÕÁË¡£
+ 
+ ÆäÊµÈ¥ËûÂèµÄ³É¾Í¸Ğ£¬È¥ËûÂèÎïÖÊ£¬ÎÒÒ»ÉúÀË·Ñ¹ıÌ«¶àµÄÊ±¼ä£¬È´ÓÈÆäÔÚÒâ¸úÔÂÔÂÔÚÒ»ÆğµÄ·Ö·Ömiaomiao £¬¿ÉÊÇ¡­¡­ÔõÃ´»áÕâÑù°¡¡£fuck fuck the world .i'm sorry to everyone./
+ 
+ ÄãÕâÃ´ÓÅĞã£¬ÎªºÎÎªºÎÎªºÎ µ½µ×ÊÇÎªÊ²Ã´£¿¾Í²»ÄÜ¶à¡­¡­¡£
+ 
+ 
 ---------
 
 		
-## È¨ÏŞÏà¹Ø¡£an-mave-base /AndroidManifest.xml	
+## È¨ÏŞÏà¹Ø¡£an-aw-zxing /AndroidManifest.xml	(ÓÉÓÚ¶şÎ¬ÂëĞèÒª»ñÈ¡ÊÖ»úÏà»úÉ¨ÃèµÄÈ¨ÏŞ£¬ÆäËüÍøÂçÈ¨ÏŞ)
 
-    <!-- ÍøÂçÏà¹ØÈ¨ÏŞ -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- WIFI×´Ì¬¼àÌıÏà¹ØÈ¨ÏŞ-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- ÍùSDCardĞ´ÈëÊı¾İÈ¨ÏŞ -->
+	<uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- ÍùSDCard¶ÁÈ¡Êı¾İÈ¨ÏŞ -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!-- ÔÚSDCard µÄ¹ÒÔØÈ¨ÏŞ -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 		
 		
 
-## 2017/03/22  17£º48
+## 2017/03/23  17£º48
 
 >ÄÜÖØÀ´¾ÍºÃÁË¡£
 
 ×îĞÂ±àÒë°æ±¾
 
-`compile 'com.github.qydq:an-aw-base:0.2.5'`
+`compile 'com.github.qydq:an-aw-zxing:1.0'`
 
 ¸üĞÂËµÃ÷£º
+```groovy
+0¡£Íê³ÉÁËREADME.mkËµÃ÷£¬È«²¿ÖØĞÂ²¹³ä¡£
+1¡£Ö§³ÖÁ¬ĞøÉ¨Ãè¶şÎ¬Âë»òÕßÌõÂë£¬
+2¡£Ö§³ÖÑ¡ÔñÏµÍ³µÄÏà²á¶Ô¶şÎ¬Âë»òÌõÂëÍ¼Æ¬½øĞĞ½âÎö£¬
+3¡£Ö§³Ö·Ç¶şÎ¬Âë»òÌõÂëÍ¼Æ¬µÄÈİ´í´¦Àí£¬
+4¡£Ô´ÂëÖĞÌá¹©ÁË¶ÔÀàËÆQQ£¬Î¢ĞÅ¶şÎ¬ÂëÓĞlogµÄÉ¨Ãè£¬
+5¡£Ö§³Ö×Ô¶¨ÒåÉ¨Ãè¶şÎ¬ÂëµÄ½çÃæ£¬
+6¡£Ö§³Ö´´½¨¶şÎ¬Âë£¬
+7¡£Ìá¹©ÁËÏñµ±Ç°ÀàËÆÁ÷ĞĞµÄµ¥³µÉ¨ÂëÉùÒô£¬µÆ¹âµÄCodeUtils¹¤¾ßÀà£¬
+8¡£Ö§³Ö¿ØÖÆÏÔÊ¾¶şÎ¬ÂëÉ¨Ãè½çÃæÓÒ±ß°´Å¥ÊÇ·ñÏÔÊ¾µÄ¿ØÖÆ¡£
+```
 
+×¼±¸·¢²¼1.0µÄ°æ±¾£¬
+
+ºóÆÚ¸Ãzxing¿ÉÄÜÓĞĞ¡·ù¶ÈµÄµ÷Õû£¬»¶Ó­´ó¼Òstar  ,*±¾×Å¿ªÔ´µÄ¾«Éñ£¬×ªÔØ±êÃ÷³ö´¦¼´¿É¡£*
+
+Èç¹ûÓĞÈÎºÎÊ¹ÓÃÎÊÌâ£¬ÇëÌáissue ,»ò·¢ËÍemai To me l :qyddai@gmail.com£¬ÒÔÇ°µÄstaryumou@163.comÓÊÏä²»ÔÙÊ¹ÓÃ ,ÒòÎªµ½´¦¶¼ÊÇÉË¡£
+
+ÇçÓêÇç 2017Äê3ÔÂ23ÈÕ 11:36:59
 

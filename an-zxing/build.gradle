@@ -1,5 +1,13 @@
 apply plugin: 'com.android.library'
-
+//配置jitpack
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.qydq'
+//配置bintray
+//ext {
+//    PUBLISH_GROUP_ID = 'cn.android.sunst'
+//    PUBLISH_ARTIFACT_ID = 'an-base'
+//    PUBLISH_VERSION = '2.0.1'
+//}
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -18,6 +26,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+//        disable 'TypographyFractions', 'TypographyQuotes'
+    }
 }
 
 dependencies {
@@ -30,3 +42,5 @@ dependencies {
     compile 'com.github.qydq:an-aw-base:0.2.5'
     compile 'com.google.zxing:core:3.3.0'
 }
+//apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
+//apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/central-publish.gradle'
