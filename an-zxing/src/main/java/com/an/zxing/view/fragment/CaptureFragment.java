@@ -27,7 +27,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.an.an_zxing.R;
-import com.an.base.utils.DUtilsDialog;
+import com.an.base.utils.YdialogUtils;
 import com.an.zxing.utils.CodeUtils;
 import com.an.zxing.utils.camera.CameraManager;
 import com.an.zxing.utils.decoding.DCaptureActivityHandler;
@@ -142,7 +142,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            DUtilsDialog.INSTANCE.dismissSimpleDialog();
+            YdialogUtils.INSTANCE.dismissSimpleDialog();
 //            mProgress.dismiss();
             switch (msg.what) {
                 case PARSE_BARCODE_FAIL:
@@ -245,7 +245,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
                         photo_path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
                     }
                     cursor.close();
-                    mProgress = DUtilsDialog.INSTANCE.createSimpleDialog(getActivity(), false, "正在解析");
+                    mProgress = YdialogUtils.INSTANCE.createSimpleDialog(getActivity(), false, "正在解析");
 //                    mProgress = new ProgressDialog(getActivity());
 //                    mProgress.setMessage("正在扫描...");
 //                    mProgress.setCancelable(false);

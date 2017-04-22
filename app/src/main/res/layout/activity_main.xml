@@ -104,12 +104,33 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSelf"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/et_qr_string"
-        android:text="定制扫描界面" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSelf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_qr_string"
+            android:text="定制扫描界面" />
+
+        <Button
+            android:id="@+id/btnWeixin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_qr_string"
+            android:text="微信扫一扫" />
+
+        <Button
+            android:id="@+id/btnZhifubao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_qr_string"
+            android:text="支付宝扫一扫" />
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

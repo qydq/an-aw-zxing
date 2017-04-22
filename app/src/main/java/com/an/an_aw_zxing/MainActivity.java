@@ -24,7 +24,6 @@ import com.an.zxing.utils.encoding.EncodingHandler;
 import com.an.zxing.view.activity.CaptureActivity;
 import com.an.zxing.view.activity.MipcaCaptureActivity;
 
-import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 /*
@@ -76,6 +75,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button btn3;
     private Button btn4;
     private Button btnSelf;
+    private Button btnZhifubao;
+    private Button btnWeixin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,16 +97,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
         editText = (EditText) this.findViewById(R.id.editText);
 
         btn3 = (Button) findViewById(R.id.btn3);
+        btnWeixin = (Button) findViewById(R.id.btnWeixin);
         btn4 = (Button) findViewById(R.id.btn4);
         btnSelf = (Button) findViewById(R.id.btnSelf);
         mButton = (Button) findViewById(R.id.button1);
         btnaddCode = (Button) this.findViewById(R.id.btn_add_qrcode);
+        btnZhifubao = (Button) this.findViewById(R.id.btnZhifubao);
 
         btn3.setOnClickListener(this);
         btn4.setOnClickListener(this);
         mButton.setOnClickListener(this);
         btnSelf.setOnClickListener(this);
         btnaddCode.setOnClickListener(this);
+        btnZhifubao.setOnClickListener(this);
+        btnWeixin.setOnClickListener(this);
     }
 
     @Override
@@ -255,6 +260,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 intent.setClass(MainActivity.this, SecondActivity.class);
                 intent.putExtra(CodeUtils.STATUS_SHOW, VISIBLE);//控制右边的按钮是否显示。
                 startActivityForResult(intent, REQUEST_SELF);
+                break;
+            case R.id.btnWeixin:
+                try {
+                    //利用Intent打开微信
+                    Uri uri = Uri.parse("weixin://dl/scan");
+                    intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    //若无法正常跳转，在此进行错误处理
+                    Toast.makeText(MainActivity.this, "无法跳转到微信，请检查您是否安装了微信！", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.btnZhifubao:
+                try {
+                    //利用Intent打开支付宝
+                    //支付宝跳过开启动画打开扫码和付款码的url scheme分别是alipayqr://platformapi/startapp?saId=10000007和
+                    //alipayqr://platformapi/startapp?saId=20000056
+                    Uri uri = Uri.parse("alipayqr://platformapi/startapp?saId=10000007");
+                    intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    //若无法正常跳转，在此进行错误处理
+                    Toast.makeText(MainActivity.this, "无法跳转到支付宝，请检查您是否安装了支付宝！", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
     }
